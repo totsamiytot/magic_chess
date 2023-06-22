@@ -9,6 +9,7 @@ import store from "../../redux/store";
 import {changeFigurePosition, selectColor, selectFigures, selectGameWon, setGameStarted} from "redux/gameSlice";
 
 import {useGameRules} from "../../hooks/useGameRules";
+import {useAIMove} from "../../hooks/useAIMove";
 
 import {BoardLettersByNumber, Colors, FigureData, Figures, TCellsFigure} from "types";
 import styles from "./Board.module.scss";
@@ -19,7 +20,12 @@ const Board: React.FC = () => {
     const figures = useAppSelector(selectFigures);
     const gameWon = useAppSelector(selectGameWon);
 
-    const {checkIsKingInCheck, getAvailableCells, moveOrEat} = useGameRules()
+    const {checkIsKingInCheck, getAvailableCells, moveOrEat} = useGameRules();
+    const {nextAIMove} = useAIMove();
+    const sides = {
+        ally: gameColor,
+        enemy: gameColor === Colors.WHITE ? Colors.BLACK : Colors.WHITE,
+    };
 
     let [isKingInCheck, setIsKingInCheck] = useState<boolean>(false);
     let dangerousCells: MutableRefObject<{
@@ -27,10 +33,7 @@ const Board: React.FC = () => {
         black: { [key: string]: boolean }
     }> = useRef({white: {}, black: {}});
 
-    const sides = {
-        ally: gameColor,
-        enemy: gameColor === Colors.WHITE ? Colors.BLACK : Colors.WHITE,
-    }
+
 
     const boardRef = useRef<HTMLDivElement>(null);
     const [choseFigurePos, setChoseFigurePos] = useState<{
@@ -170,31 +173,7 @@ const Board: React.FC = () => {
     }
 
 
-    const nextAIMove = () => {
-        const figures = store.getState().game.figures;
 
-        const getRandomElementOfArray = <T extends unknown>(arr: T[]): T => {
-            return arr[Math.floor(Math.random() * arr.length)];
-        }
-
-        const figuresIds = Object.keys(figures);
-        if (figuresIds.length < 1) return;
-        const enemyFiguresIds = figuresIds.filter(id => figures[id].color === sides.enemy);
-        let randomFigureId = getRandomElementOfArray(enemyFiguresIds);
-        let availableCells = getAvailableCells(dangerousCells, cellsFigure, figures[randomFigureId]);
-        let availableCellsArr = Object.keys(availableCells);
-        const triedFiguresIds: string[] = [];
-        while (availableCellsArr.length < 1) {
-            if (triedFiguresIds.length >= enemyFiguresIds.length) return;
-            randomFigureId = getRandomElementOfArray(enemyFiguresIds);
-            availableCells = getAvailableCells(dangerousCells, cellsFigure, figures[randomFigureId]);
-            availableCellsArr = Object.keys(availableCells);
-            triedFiguresIds.push(randomFigureId);
-        }
-        const cellForMove = getRandomElementOfArray(availableCellsArr);
-        const [x, y] = cellForMove.split('-');
-        moveOrEat(cellsFigure, moveOn, figures[randomFigureId], Number(x), Number(y));
-    }
 
     const nextAIMoveDelayed = (delay: number = 200) => {
         setTimeout(nextAIMove, delay);
