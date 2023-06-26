@@ -34,7 +34,6 @@ const Board: React.FC = () => {
     }> = useRef({white: {}, black: {}});
 
 
-
     const boardRef = useRef<HTMLDivElement>(null);
     const [choseFigurePos, setChoseFigurePos] = useState<{
         figure: FigureData
@@ -173,9 +172,10 @@ const Board: React.FC = () => {
     }
 
 
-
-
     const nextAIMoveDelayed = (delay: number = 200) => {
+        //здесь значит надо прокидывать в функцию все наши аргументы
+        nextAIMove(cellsFigure, moveOn, dangerousCells, getAvailableCells, moveOrEat, sides)
+        // а это убрать:
         setTimeout(nextAIMove, delay);
     };
 
