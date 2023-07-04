@@ -1,5 +1,5 @@
-import React, {ChangeEvent, FC} from "react";
-import styles from './RadioButton.module.scss';
+import { ChangeEvent, FC } from "react";
+import { Container, Input, Checkmark } from "./styled/radioButtonStyle";
 
 interface RadioButtonProps {
     value: string;
@@ -12,12 +12,18 @@ const RadioButton: FC<RadioButtonProps> = (props: RadioButtonProps) => {
     const handleRadioChange = (e: ChangeEvent<HTMLInputElement>) => {
         props.handleChange(e.currentTarget.id.toLowerCase());
     }
-
-    return <label className={styles.container}> {props.value}
-        <input id={props.value} onChange={handleRadioChange} type="radio" defaultChecked={props.isChecked}
-               className={styles.input} name={props.name}/>
-        <span className={styles.checkmark}></span>
-    </label>
+    return (
+        <Container> {props.value}
+            <Input
+                type="radio"
+                id={props.value}
+                defaultChecked={props.isChecked}
+                name={props.name}
+                onChange={handleRadioChange}
+            />
+            <Checkmark></Checkmark>
+        </Container>
+    )
 }
 
 export default RadioButton;

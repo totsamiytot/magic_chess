@@ -1,17 +1,27 @@
-import React, {useEffect, useRef, useState, MutableRefObject, FC} from "react";
-import {Link} from "react-router-dom";
+import { useEffect, useRef, useState, MutableRefObject, FC } from "react";
 
-import {useAppDispatch, useAppSelector} from "shared/hooks/useRedux";
+import { useAppDispatch, useAppSelector } from "shared/hooks/useRedux";
 import Figure from "entities/Figure/ui/Figure";
 import Cell from "entities/Cell/ui/Cell";
-import {useGameRules} from "features/useGameRules";
+import { useGameRules } from "features/useGameRules";
 
 import store from "app/store/gameStore/store";
-import {changeFigurePosition, setGameStarted} from "app/store/gameStore/gameSlice";
-import {selectColor, selectFigures, selectGameWon} from "app/store/gameStore/selectors";
+import { changeFigurePosition, setGameStarted } from "app/store/gameStore/gameSlice";
+import { selectColor, selectFigures, selectGameWon } from "app/store/gameStore/selectors";
 
-import styles from "./Board.module.scss";
-import {BoardLettersByNumber, Colors, FigureData, Figures, TCellsFigure} from "app/types";
+import { BoardLettersByNumber, Colors, FigureData, Figures, TCellsFigure } from "app/types";
+import {
+    BoardWrapper,
+    BoardLeft,
+    BoardLeftItem,
+    BoardBottom,
+    BoardBottomItem,
+    BoardStyles,
+    CellSelected,
+    GameWon,
+    GameWonButtonLink
+} from "./styled/boardStyle";
+
 
 const Board: FC = () => {
     const dispatch = useAppDispatch();
@@ -19,13 +29,13 @@ const Board: FC = () => {
     const figures = useAppSelector(selectFigures);
     const gameWon = useAppSelector(selectGameWon);
 
-    const {checkIsKingInCheck, getAvailableCells, moveOrEat} = useGameRules()
+    const { checkIsKingInCheck, getAvailableCells, moveOrEat } = useGameRules()
 
     let [isKingInCheck, setIsKingInCheck] = useState<boolean>(false);
     let dangerousCells: MutableRefObject<{
         white: { [key: string]: boolean };
         black: { [key: string]: boolean }
-    }> = useRef({white: {}, black: {}});
+    }> = useRef({ white: {}, black: {} });
 
     const sides = {
         ally: gameColor,
@@ -51,7 +61,7 @@ const Board: FC = () => {
     const moveOn = (figure: FigureData, x: number, y: number) => {
         cellsFigure[`${figure.x}-${figure.y}`] = null;
         cellsFigure[`${x}-${y}`] = figure;
-        dispatch(changeFigurePosition({figure, x, y}));
+        dispatch(changeFigurePosition({ figure, x, y }));
         setChoseFigurePos(null);
     }
 
@@ -228,10 +238,12 @@ const Board: FC = () => {
         if (!gameWon) return null;
         const color = gameWon[0].toUpperCase() + gameWon.slice(1);
 
-        return <div className={styles.gameWon}>
-            <h2 className={styles.gameWonTitle}>{color} won</h2>
-            <Link to="/" className={styles.gameWonButton}>Main page</Link>
-        </div>;
+        return (
+            <GameWon>
+                <h2>{color}won</h2>
+                <GameWonButtonLink to="/">Main page</GameWonButtonLink>
+            </GameWon>
+        )
     }
 
     useEffect(() => {
@@ -244,36 +256,35 @@ const Board: FC = () => {
         dispatch(setGameStarted(true));
     }, [])
 
-    return <div className={styles.boardWrapper} ref={boardRef}>
-        <ul className={styles.boardLeft}>
-            <li className={styles.boardLeftItem}>1</li>
-            <li className={styles.boardLeftItem}>2</li>
-            <li className={styles.boardLeftItem}>3</li>
-            <li className={styles.boardLeftItem}>4</li>
-            <li className={styles.boardLeftItem}>5</li>
-            <li className={styles.boardLeftItem}>6</li>
-            <li className={styles.boardLeftItem}>7</li>
-            <li className={styles.boardLeftItem}>8</li>
-        </ul>
-
-        <ul className={styles.boardBottom}>
-            <li className={styles.boardBottomItem}>A</li>
-            <li className={styles.boardBottomItem}>B</li>
-            <li className={styles.boardBottomItem}>C</li>
-            <li className={styles.boardBottomItem}>D</li>
-            <li className={styles.boardBottomItem}>E</li>
-            <li className={styles.boardBottomItem}>F</li>
-            <li className={styles.boardBottomItem}>G</li>
-            <li className={styles.boardBottomItem}>H</li>
-        </ul>
-
-        <ul className={styles.board}>
-            {initCells()}
-            {initFigures()}
-        </ul>
-
-        {getGameWonJSX()}
-    </div>
+    return (
+        <BoardWrapper ref={boardRef}>
+            <BoardLeft>
+                <BoardLeftItem>1</BoardLeftItem>
+                <BoardLeftItem>2</BoardLeftItem>
+                <BoardLeftItem>3</BoardLeftItem>
+                <BoardLeftItem>4</BoardLeftItem>
+                <BoardLeftItem>5</BoardLeftItem>
+                <BoardLeftItem>6</BoardLeftItem>
+                <BoardLeftItem>7</BoardLeftItem>
+                <BoardLeftItem>8</BoardLeftItem>
+            </BoardLeft>
+            <BoardBottom>
+                <BoardBottomItem>A</BoardBottomItem>
+                <BoardBottomItem>B</BoardBottomItem>
+                <BoardBottomItem>C</BoardBottomItem>
+                <BoardBottomItem>D</BoardBottomItem>
+                <BoardBottomItem>E</BoardBottomItem>
+                <BoardBottomItem>F</BoardBottomItem>
+                <BoardBottomItem>G</BoardBottomItem>
+                <BoardBottomItem>H</BoardBottomItem>
+            </BoardBottom>
+            <BoardStyles>
+                {initCells()}
+                {initFigures()}
+            </BoardStyles>
+            {getGameWonJSX()}
+        </BoardWrapper>
+    )
 }
 
 export default Board;

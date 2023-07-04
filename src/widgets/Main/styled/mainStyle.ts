@@ -1,4 +1,6 @@
-.wrapper {
+import styled from "styled-components";
+import { Link } from "react-router-dom";
+export const Wrapper = styled.div`
   display: flex;
   flex-flow: column;
   align-items: center;
@@ -11,16 +13,16 @@
   align-self: center;
   padding: 24px 36px;
   font-size: 18px;
-  color: #34364C;
+  color: #34364c;
 
   h2 {
     display: inline-block;
     margin-bottom: 12px;
     vertical-align: center;
   }
-}
+`;
 
-.button {
+export const Button = styled.button`
   display: flex;
   justify-content: center;
   background: rgba(255, 255, 255, 0.25);
@@ -31,7 +33,7 @@
   border-radius: 10px;
   border: 1px solid rgba(255, 255, 255, 0.18);
   margin-top: 18px;
-  transition: all .5s;
+  transition: all 0.5s;
   cursor: pointer;
   font-weight: 500;
   padding: 4px 32px;
@@ -41,16 +43,39 @@
   &:hover {
     box-shadow: none;
   }
-}
+`;
 
-.logo {
+export const Logo = styled.div`
   display: inline-block;
   width: 100px;
   height: 100px;
-  background: url('../../../public/logo.png');
+  background: url("../../../public/logo.png");
   background-position: center;
   background-size: contain;
   background-repeat: no-repeat;
   vertical-align: center;
   margin-bottom: 20px;
-}
+`;
+
+export const StyledLink = styled(Link)`
+  display: flex;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  align-self: stretch;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  margin-top: 18px;
+  transition: all 0.5s;
+  cursor: pointer;
+  font-weight: 500;
+  padding: 4px 32px;
+  color: inherit;
+  text-decoration: none;
+
+  &:hover {
+    box-shadow: none;
+  }
+`;

@@ -1,28 +1,27 @@
-.boardWrapper {
+import styled from "styled-components";
+import { Link } from "react-router-dom";
+export const BoardWrapper = styled.div`
   width: 100vw;
   min-width: 300px;
   min-height: 300px;
   position: relative;
-  padding-right: 12px;
-  padding-top: 12px;
-  padding-left: 48px;
-  padding-bottom: 52px;
+  padding: 12px 12px 52px 48px;
   overflow: hidden;
-  background: #F4F7FA;
-  box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
-  backdrop-filter: blur( 4px );
-  -webkit-backdrop-filter: blur( 4px );
+  background: #f4f7fa;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
   border-radius: 8px;
-  border: 1px solid rgba( 255, 255, 255, 0.18 );
+  border: 1px solid rgba(255, 255, 255, 0.18);
   font-size: 14px;
-  color: #34364C;
+  color: #34364c;
 
   @media (max-width: 700px) {
     font-size: 11px;
   }
-}
+`;
 
-.board {
+export const BoardStyles = styled.div`
   position: relative;
   display: grid;
   grid-template-columns: repeat(8, 1fr);
@@ -30,9 +29,9 @@
   width: 100%;
   height: 100%;
   overflow: hidden;
-}
+`;
 
-.boardLeft {
+export const BoardLeft = styled.div`
   display: flex;
   flex-flow: column-reverse;
   position: absolute;
@@ -42,16 +41,16 @@
   padding-top: 12px;
   top: 0;
   left: 0;
-}
+`;
 
-.boardLeftItem {
+export const BoardLeftItem = styled.div`
   display: flex;
   flex-grow: 1;
   align-items: center;
   justify-content: center;
-}
+`;
 
-.boardBottom {
+export const BoardBottom = styled.div`
   display: flex;
   flex-flow: row;
   position: absolute;
@@ -61,20 +60,20 @@
   padding-right: 12px;
   bottom: 0;
   left: 0;
-}
+`;
 
-.boardBottomItem {
+export const BoardBottomItem = styled.div`
   display: flex;
   flex-grow: 1;
   align-items: center;
   justify-content: center;
-}
+`;
 
-.cellSelected {
-  background-color: #B1A7FC;
-}
+export const CellSelected = styled.div`
+  background-color: #b1a7fc;
+`;
 
-.gameWon {
+export const GameWon = styled.div`
   position: absolute;
   left: 0;
   top: 0;
@@ -84,12 +83,11 @@
   flex-flow: column;
   align-items: center;
   justify-content: center;
-  background-color: rgba(0, 0, 0, .7);
+  background-color: rgba(0, 0, 0, 0.7);
   color: white;
   font-size: 20px;
-}
+`;
 
-.gameWonButton {
+export const GameWonButtonLink = styled(Link)`
   color: inherit;
-
-}
+`;
