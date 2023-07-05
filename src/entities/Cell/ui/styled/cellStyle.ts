@@ -1,8 +1,18 @@
 import styled, { css } from "styled-components";
 import { Colors } from "app/types";
-import { CellCircleStyleProps, CellProps } from "../Cell";
 
-export const CellStyle = styled.div<CellProps | any>`
+interface CellCircleStyleProps {
+  show: string;
+}
+
+interface CellStyleProps {
+  color: Colors;
+  $isAvailableForMove?: boolean;
+  $isHavingFigure?: boolean;
+  $isSelected?: boolean;
+}
+
+export const CellStyle = styled.div<CellStyleProps>`
   position: relative;
   transition: all 0.2s;
   ${({ color }) =>
@@ -10,9 +20,9 @@ export const CellStyle = styled.div<CellProps | any>`
       ? "background-color: #E8EDF9;"
       : "background-color: #B7C0D8;"}
 
-  ${({ isAvailableForMove, isHavingFigure }) =>
-    isAvailableForMove &&
-    isHavingFigure &&
+  ${({ $isAvailableForMove, $isHavingFigure }) =>
+    $isAvailableForMove &&
+    $isHavingFigure &&
     css`
       cursor: pointer;
 
@@ -20,8 +30,8 @@ export const CellStyle = styled.div<CellProps | any>`
         opacity: 0.8;
       }
     `}
-  ${({ isSelected }) =>
-    isSelected &&
+  ${({ $isSelected }) =>
+    $isSelected &&
     css`
       border: 2px solid #7b61ff;
     `}
@@ -39,7 +49,7 @@ export const CellCircleStyle = styled.div<CellCircleStyleProps>`
   transition: all 0.2s;
 
   ${({ show }) =>
-    show &&
+    show === "true" &&
     css`
       opacity: 1;
     `}

@@ -1,5 +1,9 @@
+import { HTMLAttributes } from "react";
 import styled from "styled-components";
-import { FigureStyleProps } from "../Figure";
+
+interface FigureStyleProps extends HTMLAttributes<HTMLDivElement> {
+  $isEatable?: boolean;
+}
 
 export const FigureStyle = styled.div<FigureStyleProps>`
   position: absolute;
@@ -8,8 +12,8 @@ export const FigureStyle = styled.div<FigureStyleProps>`
   padding: 6px;
   transition: all 0.5s;
   cursor: pointer;
-  ${({ isEatable }) =>
-    isEatable ? "background-color: rgba(255, 0, 0, 0.2);" : ""}
+  ${({ $isEatable }) =>
+    $isEatable ? "background-color: rgba(255, 0, 0, 0.2);" : ""}
 
   svg {
     transition: all 0.5s;
